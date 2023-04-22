@@ -7,12 +7,12 @@
   "author": "SAM CLI",
   "license": "MIT",
   "scripts": {
-    "build": "sam build --template src/infra/template.yaml",
-    "deploy": "sam deploy --config-file src/infra/samconfig.toml",
+    "test": "yarn compile && yarn unit",
     "unit": "jest",
-    "lint": "eslint '*.ts' --quiet --fix",
     "compile": "tsc",
-    "test": "yarn compile && yarn unit"
+    "lint": "eslint '*.ts' --quiet --fix",
+    "build": "sam build --template src/infra/template.yaml",
+    "deploy": "sam deploy --config-file src/infra/samconfig.toml"
   },
   "dependencies": {
     "@aws-lambda-powertools/logger": "^1.6.0",
