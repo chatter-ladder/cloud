@@ -13,7 +13,7 @@ import { Logger } from '@aws-lambda-powertools/logger';
 
 const logger = new Logger();
 
-export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+export const handle = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     logger.info('in lambda handler');
     try {
         return {
