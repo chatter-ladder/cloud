@@ -12,11 +12,12 @@
     "unit": "jest",
     "compile": "tsc",
     "lint": "eslint '*.ts' --quiet --fix",
-    "build": "sam build --template src/infra/template.yaml",
-    "deploy": "sam deploy --config-file src/infra/samconfig.toml"
+    "build": "yarn validate && sam build --template src/infra/template.yaml",
+    "deploy": "yarn build && sam deploy --config-file src/infra/samconfig.toml"
   },
   "dependencies": {
     "@aws-lambda-powertools/logger": "^1.6.0",
+    "@aws-sdk/client-dynamodb": "^3.316.0",
     "esbuild": "^0.14.14"
   },
   "devDependencies": {

@@ -8,7 +8,7 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 30
 
 Resources:
   RetrieveVocabListFunction:
@@ -25,6 +25,16 @@ Resources:
           Properties:
             Path: /vocab
             Method: get
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:Query
+              Resource: !GetAtt VocabDBTable.Arn
+      Environment:
+        Variables:
+          VOCAB_TABLE_NAME: !Ref VocabDBTable
     Metadata: # Manage esbuild properties
       BuildMethod: esbuild
       BuildProperties:
@@ -33,6 +43,20 @@ Resources:
         Sourcemap: true
         EntryPoints:
           - retrieve-vocab-list.ts
+
+  VocabDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Vocab-Table
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
 
   ApplicationResourceGroup:
     Type: AWS::ResourceGroups::Group
@@ -57,6 +81,6 @@ Outputs:
   RetrieveVocabListFunction:
     Description: Retrive Vocba List Lambda Function ARN
     Value: !GetAtt RetrieveVocabListFunction.Arn
-  RetrieveVocabListFunctionIamRole:
+  RetrieveVocabListFunctionRole:
     Description: Implicit IAM Role created for Retrive Vocba List function
     Value: !GetAtt RetrieveVocabListFunctionRole.Arn
